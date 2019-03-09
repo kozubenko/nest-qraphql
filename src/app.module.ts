@@ -1,10 +1,21 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { GraphQLModule } from '@nestjs/graphql';
+import { join } from 'path';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    UsersModule,
+    GraphQLModule.forRoot({
+      typePaths: ['./**/*.graphql'],
+      installSubscriptionHandlers: true,
+      playground: process.env.NODE_ENV === 'development',
+      debug: process.env.NODE_ENV === 'development',
+      definitions: {
+        path: join(process.cwd(), 'src/graphql.schema.ts'),
+        outputAs: 'class',
+      },
+    }),
+  ],
 })
-export class AppModule {}
+export class ApplicationModule {}
