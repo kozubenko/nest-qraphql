@@ -1,17 +1,22 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '../graphql.schema';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
+import { User } from '../../graphql.schema';
+import { User as UserEntity } from './user.entity';
 
 @Injectable()
 export class UsersService {
-  private readonly users: User[] = [
-    { id: 1, firstName: 'Author', lastName: 'Author' },
-  ];
+  constructor(
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
+  ) {}
 
-  findAll(): User[] {
-    return this.users;
+  async findAll(): Promise<User[]> {
+    return await this.userRepository.find();
   }
 
-  findOneById(id: number): User {
-    return this.users.find(user => user.id === id);
+  async find(id: number): Promise<User> {
+    return this.userRepository.findOne(id);
   }
 }

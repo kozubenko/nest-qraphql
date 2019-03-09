@@ -10,7 +10,7 @@ export class UsersResolvers {
 
   @Query('user')
   async getUser(@Args('id') id: number) {
-    return await this.usersService.findOneById(id);
+    return await this.usersService.find(id);
   }
 
   @Query('users')
