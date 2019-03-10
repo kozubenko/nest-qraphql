@@ -1,4 +1,4 @@
-import {MigrationInterface, QueryRunner, Table} from 'typeorm';
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export class CreateUsers1552134016429 implements MigrationInterface {
 
@@ -6,7 +6,13 @@ export class CreateUsers1552134016429 implements MigrationInterface {
     await queryRunner.createTable(new Table({
       name: 'user',
       columns: [
-        { name: 'id', type: 'int', isPrimary: true },
+        { name: 'id', type: 'int', isPrimary: true, isGenerated: true },
+        { name: 'first_name', type: 'varchar' },
+        { name: 'last_name', type: 'varchar' },
+        { name: 'email', type: 'varchar', isUnique: true },
+        { name: 'password', type: 'varchar' },
+        { name: 'created_at', type: 'timestamp', default: 'CURRENT_TIMESTAMP' },
+        { name: 'updated_at', type: 'timestamp', default: 'CURRENT_TIMESTAMP' },
       ],
     }), true);
   }

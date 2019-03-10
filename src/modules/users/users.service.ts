@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { User } from '../../graphql.schema';
+import { CreateUserInput, User } from '../../graphql.schema';
 import { User as UserEntity } from './user.entity';
 
 @Injectable()
@@ -11,6 +11,11 @@ export class UsersService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
   ) {}
+
+  async create(user: CreateUserInput): Promise<User> {
+    const newUser = await this.userRepository.create(user);
+    return await this.userRepository.save(newUser);
+  }
 
   async findAll(): Promise<User[]> {
     return await this.userRepository.find();
