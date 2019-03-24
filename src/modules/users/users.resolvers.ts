@@ -1,5 +1,7 @@
 import { Resolver, Query, Args  } from '@nestjs/graphql';
 import { UsersService } from './users.service';
+import { UseGuards } from '@nestjs/common';
+import { GqlAuthGuard } from '../auth/auth.guard';
 
 @Resolver('User')
 export class UsersResolvers {
@@ -14,6 +16,7 @@ export class UsersResolvers {
   }
 
   @Query('users')
+  @UseGuards(new GqlAuthGuard())
   async getUsers() {
     return await this.usersService.findAll();
   }

@@ -5,4 +5,6 @@ export class User {
 
   @PrimaryGeneratedColumn()
   id: number;
+
+  email: string;
 }
